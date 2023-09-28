@@ -3,6 +3,7 @@ import os
 import time
 
 #this is a comment
+#this is a test
 
 # Connection parameters
 host = 'localhost'
