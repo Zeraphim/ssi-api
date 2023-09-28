@@ -15,10 +15,11 @@ from flask import Flask
 #     app.run()
 
 app = Flask(__name__)
-@app.route("/")
-def home():
-    return "Hello, World!"
 
-@app.route("/about")
+@app.route('/')
+def home():
+    return 'Hello, World!'
+
+@app.route('/about')
 def about():
-    return "About Page,"
+    return 'About'
