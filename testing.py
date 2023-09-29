@@ -1,4 +1,5 @@
 import mysql.connector
+# import  pymysql
 import os
 import time
 
@@ -7,10 +8,18 @@ import time
 #test comment Gabriel Deveraturda
 
 # Connection parameters
-host = 'localhost'
-user = 'ssiadmin'
-password = 'root321'
-database = 'mysql'
+# host = 'localhost'
+# user = 'ssiadmin'
+# password = 'root321'
+# database = 'mysql'
+
+host = "ssi-mariadb-test.mariadb.database.azure.com"
+user = "ssi@ssi-mariadb-test"
+password = "adminTest1"
+database = "ssi"
+
+
+# cnx = mysql.connector.connect(user="ssi@ssi-mariadb-test", password="adminTest1", host="ssi-mariadb-test.mariadb.database.azure.com", port=3306, database={your_database}, ssl_ca={ca-cert filename}, ssl_verify_cert=true)
 
 # connecting to mariadb
 try:
@@ -24,45 +33,96 @@ try:
     if connection.is_connected():
         cursor = connection.cursor()
 
-        # Show all databases
-        show_databases_sql = "SHOW DATABASES;"
-        cursor.execute(show_databases_sql)
-        databases = cursor.fetchall()
-        
-        print("List of databases:")
-        for db in databases:
-            print(db[0])
 
-        # while True:
-        #     os.system('clear')
+        while True:
+            os.system('clear')
 
-        #     print(f"\n> {'='*9} OutSystems {'='*9} <\n\n1: GetAllPartners\n2: GetAllCareers \n3: GetAllProjects\n4. Add Inquiry\n5. Show Databases\n6. Exit\n")
-        #     response = input("> ")
+            print(f"\n> {'='*9} S S I  D B {'='*9} <\n\n1: Show All Databases\n2: Show Tables \n3. Run Command\n4: Exit\n")
+            response = input("> ")
 
-        #     if response == "1":
+            if response == "1":
 
+                print('\n')
 
-        #     elif response == "2":
-        #         os.system('clear')
-
-        #     elif response == "3":
-        #         # Show all databases
-        #         show_databases_sql = "SHOW DATABASES;"
-        #         cursor.execute(show_databases_sql)
-        #         databases = cursor.fetchall()
+                # Show all databases
+                show_databases_sql = "SHOW DATABASES;"
+                cursor.execute(show_databases_sql)
+                databases = cursor.fetchall()
                 
-        #         print("List of databases:")
-        #         for db in databases:
-        #             print(db[0])
+                for db in databases:
+                    print(db[0])
 
-        #     elif response == "6":
-        #         exit
+                input('\nPaused enter any key: ')
 
-        #     else:
-        #         print("\n**Invalid response**\n")
-        #         time.sleep(1)
-        #         os.system('clear')
-        #         continue
+            elif response == "2":
+
+                print('\n')
+
+                # Show all tables
+                show_databases_sql = "SHOW TABLES;"
+                cursor.execute(show_databases_sql)
+                databases = cursor.fetchall()
+                
+                for db in databases:
+                    print(db[0])
+
+                input('\nPaused enter any key: ')
+
+            elif response == "3":
+                q = input("\nEnter Querry: ")
+
+                cursor.execute(q)
+
+                rows = cursor.fetchall()
+
+                for row in rows:
+                    print(row)
+
+                input('\nPaused enter any key: ')
+
+            elif response == "4":
+                break
+
+            else:
+                print("\n**Invalid response**\n")
+                time.sleep(1)
+                input('\nPaused enter any key: ')
+                continue
+
+        # cursor.execute("CREATE TABLE Category (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50),description VARCHAR(255));")
+
+        # cursor.execute("INSERT INTO Category (name, description) VALUES ('Category 1', 'This is a description');")
+        # cursor.execute("INSERT INTO Category (name, description) VALUES ('Category 2', 'This is a description');")
+        # cursor.execute("INSERT INTO Category (name, description) VALUES ('Category 3', 'This is a description');")
+
+        # cursor.execute("SELECT * FROM CATEGORY;")
+    
+        # rows = cursor.fetchall()
+        
+        # for row in rows:
+        #     print(row)
+
+        # Drop Table
+        # cursor.execute("DROP TABLE category;")
+        # databases = cursor.fetchall()
+        
+        # for db in databases:
+        #     print(db[0])
+
+
+        # cursor.execute("CREATE TABLE Projects (name VARCHAR(255), description TEXT, link VARCHAR(255), category VARCHAR(255));")
+        # databases = cursor.fetchall()
+        
+        # for db in databases:
+        #     print(db[0])
+
+        # Show Tables
+        # cursor.execute("SHOW TABLES;")
+        # databases = cursor.fetchall()
+        # for db in databases:
+        #     print(db[0])
+
+
     
 
 except mysql.connector.Error as error:
@@ -71,5 +131,6 @@ except mysql.connector.Error as error:
 finally:
     if 'connection' in locals() and connection.is_connected():
         cursor.close()
+        connection.commit()
         connection.close()
         print("MySQL connection is closed.")
