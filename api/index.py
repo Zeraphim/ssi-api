@@ -29,7 +29,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'SSI API'
+    return 'SSI API\n\nCommands:\n1. GetAllDepartments'
 
 @app.route('/GetAllProjects')
 def about():
