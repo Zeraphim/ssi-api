@@ -29,7 +29,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'SSI API\n\nCommands:\n1. GetAllDepartments'
+    return 'SSI API\n\nCommands:\n1. GetAllDepartments\n2./GetAllCategories'
 
 @app.route('/GetAllProjects')
 def about():
@@ -54,12 +54,10 @@ def departments():
         if connection.is_connected():
             cursor = connection.cursor()
 
-            # Show all databases
             show_databases_sql = "SELECT * FROM DEPARTMENT;"
             cursor.execute(show_databases_sql)
             department_data = cursor.fetchall()
         
-            # Create a list of dictionaries to store the rows as JSON objects
             department_list = []
             for row in department_data:
                 department_dict = {
@@ -71,8 +69,55 @@ def departments():
             # Convert the list of dictionaries to JSON
             department_json = json.dumps(department_list, indent=4)
 
-            # Print the JSON data
             return department_json
+        
+
+    except mysql.connector.Error as error:
+        print("Error: {}".format(error))
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed.")
+
+    return 'Departments'
+
+
+
+@app.route('/GetAllCategories')
+def categories():
+
+    # connecting to mariadb
+    try:
+
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            show_databases_sql = "SELECT * FROM CATEGORY;"
+            cursor.execute(show_databases_sql)
+            category_data = cursor.fetchall()
+        
+            category_list = []
+            for row in category_data:
+                category_dict = {
+                    "id": row[0],
+                    "name": row[1],
+                    "description": row[2]
+                }
+                category_list.append(category_dict)
+
+            # Convert the list of dictionaries to JSON
+            category_json = json.dumps(category_list, indent=4)
+
+            return category_json
         
 
     except mysql.connector.Error as error:
