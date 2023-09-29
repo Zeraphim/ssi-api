@@ -87,7 +87,6 @@ def departments():
 
 @app.route('/GetAllCategories')
 def categories():
-
     # connecting to mariadb
     try:
 
@@ -130,3 +129,10 @@ def categories():
             print("MySQL connection is closed.")
 
     return 'Departments'
+
+
+@app.route('/AddInquiry')
+def AddInquiry():
+
+    return 'Add Inquiry'
+    # outsystems
