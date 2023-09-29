@@ -72,7 +72,7 @@ def departments():
             department_json = json.dumps(department_list, indent=4)
 
             # Print the JSON data
-            print(department_json)
+            return department_json
         
 
     except mysql.connector.Error as error:
