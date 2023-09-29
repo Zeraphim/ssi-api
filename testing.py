@@ -3,6 +3,10 @@ import mysql.connector
 import os
 import time
 
+
+
+
+
 #this is a comment
 #this is a test
 #test comment Gabriel Deveraturda
@@ -37,7 +41,7 @@ try:
         while True:
             os.system('clear')
 
-            print(f"\n> {'='*9} S S I  D B {'='*9} <\n\n1: Show All Databases\n2: Show Tables \n3. Run Command\n4: Exit\n")
+            print(f"\n> {'='*9} S S I  D B {'='*9} <\n\n1: Show All Databases\n2: Show Tables \n3. Run Command\n4. Pic Upload\n5: Exit\n")
             response = input("> ")
 
             if response == "1":
@@ -81,6 +85,15 @@ try:
                 input('\nPaused enter any key: ')
 
             elif response == "4":
+                photo_path = "/Users/zeraphim/Desktop/a.png"
+                
+                with open(photo_path, "rb") as photo_file:
+                    photo_data = photo_file.read()
+
+                q = f"INSERT INTO Projects (name, description, photo, category) VALUES ('Project A', 'This is a description', {photo_data}, 1)"
+
+                
+            elif response == "5":
                 break
 
             else:
