@@ -4,6 +4,7 @@
 from flask import Flask
 import mysql.connector
 import json
+from pprint import pp
 
 # app = Flask(__name__)
 
@@ -29,110 +30,159 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'SSI API\n\nCommands:\n1. GetAllDepartments\n2./GetAllCategories'
+	
+	data = {
+		"title": "This is a proof-of-concept API server. You can test each endpoint by creating a GET request for each one. The data they return is EXACTLY the same data that the frontend will expect.",
+		"endpoints": [
+			{
+				"url": "/getWebsiteData",
+				"params": [],
+				"method": "GET",
+				"description": "Returns a list of Service Categories and Projects that are displayed on the website.",
+				"example_request": "/getWebsiteData"
+			},
+			{
+				"url": "/getOpportunities",
+				"params": [
+					{
+						"name": "department",
+						"type": "string",
+						"required": "true",
+					},
+					{
+						"name": "experience_level",
+						"type": "string",
+						"required": "true"
+					}
+				],
+				"method": "GET",
+				"description": "Returns a list of Opportunity that fulfills the Department and Experience Level filters.",
+				"example_request": "/getOpportunities?department=Engineering&experience_level=Internship"
+			},
+			{
+				"url": "/getOpportunity",
+				"params": [
+					{
+						"name": "id",
+						"type": "int",
+						"required": "true"
+					}
+				],
+				"method": "GET",
+				"description": "Returns an Opportunity with the same id.",
+				"example_request": "/getOpportunity?id=1"
+			}
+		]
+	}
+
+	# return 'SSI API\n\nCommands:\n1. GetAllDepartments\n2./GetAllCategories'
+	return (data)
 
 @app.route('/GetAllProjects')
 def about():
-    return 'About'
+	return 'About'
 
 @app.route('/GetAllDepartments')
 def departments():
 
-    # connecting to mariadb
-    try:
+	# connecting to mariadb
+	try:
 
-        return_dict = {}
-        cols = ['id', 'name']
+		return_dict = {}
+		cols = ['id', 'name']
 
-        connection = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=database
-        )
+		connection = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
 
-        if connection.is_connected():
-            cursor = connection.cursor()
+		if connection.is_connected():
+			cursor = connection.cursor()
 
-            show_databases_sql = "SELECT * FROM DEPARTMENT;"
-            cursor.execute(show_databases_sql)
-            department_data = cursor.fetchall()
-        
-            department_list = []
-            for row in department_data:
-                department_dict = {
-                    "id": row[0],
-                    "name": row[1]
-                }
-                department_list.append(department_dict)
+			show_databases_sql = "SELECT * FROM DEPARTMENT;"
+			cursor.execute(show_databases_sql)
+			department_data = cursor.fetchall()
+		
+			department_list = []
+			for row in department_data:
+				department_dict = {
+					"id": row[0],
+					"name": row[1]
+				}
+				department_list.append(department_dict)
 
-            # Convert the list of dictionaries to JSON
-            department_json = json.dumps(department_list, indent=4)
+			# Convert the list of dictionaries to JSON
+			department_json = json.dumps(department_list, indent=4)
 
-            return department_json
-        
+			return department_json
+		
 
-    except mysql.connector.Error as error:
-        print("Error: {}".format(error))
+	except mysql.connector.Error as error:
+		print("Error: {}".format(error))
 
-    finally:
-        if 'connection' in locals() and connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed.")
+	finally:
+		if 'connection' in locals() and connection.is_connected():
+			cursor.close()
+			connection.close()
+			print("MySQL connection is closed.")
 
-    return 'Departments'
+	return 'Departments'
 
 
 
 @app.route('/GetAllCategories')
 def categories():
-    # connecting to mariadb
-    try:
+	# connecting to mariadb
+	try:
 
-        connection = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=database
-        )
+		connection = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
 
-        if connection.is_connected():
-            cursor = connection.cursor()
+		if connection.is_connected():
+			cursor = connection.cursor()
 
-            show_databases_sql = "SELECT * FROM CATEGORY;"
-            cursor.execute(show_databases_sql)
-            category_data = cursor.fetchall()
-        
-            category_list = []
-            for row in category_data:
-                category_dict = {
-                    "id": row[0],
-                    "name": row[1],
-                    "description": row[2]
-                }
-                category_list.append(category_dict)
+			show_databases_sql = "SELECT * FROM CATEGORY;"
+			cursor.execute(show_databases_sql)
+			category_data = cursor.fetchall()
+		
+			category_list = []
+			for row in category_data:
+				category_dict = {
+					"id": row[0],
+					"name": row[1],
+					"description": row[2]
+				}
+				category_list.append(category_dict)
 
-            # Convert the list of dictionaries to JSON
-            category_json = json.dumps(category_list, indent=4)
+			# Convert the list of dictionaries to JSON
+			category_json = json.dumps(category_list, indent=4)
 
-            return category_json
-        
+			return category_json
+		
 
-    except mysql.connector.Error as error:
-        print("Error: {}".format(error))
+	except mysql.connector.Error as error:
+		print("Error: {}".format(error))
 
-    finally:
-        if 'connection' in locals() and connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed.")
+	finally:
+		if 'connection' in locals() and connection.is_connected():
+			cursor.close()
+			connection.close()
+			print("MySQL connection is closed.")
 
-    return 'Departments'
+	return 'Departments'
 
 
 @app.route('/AddInquiry')
 def AddInquiry():
 
-    return 'Add Inquiry'
-    # outsystems
+	return 'Add Inquiry'
+	# outsystems
+
+
+app.run()
