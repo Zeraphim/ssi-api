@@ -4,18 +4,18 @@
 from flask import Flask
 import mysql.connector
 import json
-from pprint import pp
 
-# app = Flask(__name__)
+'''
 
-# @app.route('/api/hello', methods=['GET'])
-# def hello_world():
-#     return "Hello, World!"
+Missing:
 
-# # main driver function
-# if __name__ == '__main__':
+1. GetAllInquiry - Kyle
+2. GetAllPartner - Kyle
+3. GetAllService - Gab
+4. GetAllProject - Bryan
+5. GetAllOpportunity - Bryan
 
-#     app.run()
+'''
 
 host = "ssi-mariadb-test.mariadb.database.azure.com"
 user = "ssi@ssi-mariadb-test"
@@ -130,8 +130,6 @@ def departments():
 
 	return 'Departments'
 
-
-
 @app.route('/GetAllCategories')
 def categories():
 	# connecting to mariadb
@@ -151,7 +149,7 @@ def categories():
 			cursor.execute(show_databases_sql)
 			category_data = cursor.fetchall()
 		
-			category_list = []
+			category_list = {}
 			for row in category_data:
 				category_dict = {
 					"id": row[0],
@@ -185,4 +183,5 @@ def AddInquiry():
 	# outsystems
 
 
-app.run()
+# comment this out when running in vercel
+# app.run()
