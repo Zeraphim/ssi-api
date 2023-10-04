@@ -84,7 +84,7 @@ def projects():
 	try:
 
 		return_dict = {}
-		cols = ['id', 'name']
+		cols = ['id', 'name', 'category', 'description']
 
 		connection = mysql.connector.connect(
 			host=host,
@@ -105,7 +105,8 @@ def projects():
 				project_dict = {
 					"id": row[0],
 					"name": row[1],
-					"category": row[2]
+					"category": row[2],
+					"description": row[3]
 				}
 				project_list.append(project_dict)
 
@@ -126,6 +127,56 @@ def projects():
 
 	return 'Projects'
 
+@app.route('/GetAllOpportunity')
+def opportunity():
+	# connecting to mariadb
+	try:
+
+		return_dict = {}
+		cols = ['ID','title','location','department','experience_level','description']
+
+		connection = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
+
+		if connection.is_connected():
+			cursor = connection.cursor()
+
+			show_databases_sql = "SELECT * FROM OPPORTUNITIES;"
+			cursor.execute(show_databases_sql)
+			opportunity_data = cursor.fetchall()
+		
+			opportunity_list = []
+			for row in opportunity_data:
+				opportunity_dict = {
+					"ID": row[0],
+					"title": row[1],
+					"location": row[2],
+					"department": row[3],
+					"experience_level": row[4],
+					"description": row[5]
+				}
+				opportunity_list.append(opportunity_dict)
+
+			# Convert the list of dictionaries to JSON
+			project_json = json.dumps(opportunity_list, indent=4)
+
+			return project_json
+		
+
+	except mysql.connector.Error as error:
+		print("Error: {}".format(error))
+
+	finally:
+		if 'connection' in locals() and connection.is_connected():
+			cursor.close()
+			connection.close()
+			print("MySQL connection is closed.")
+
+	return 'Opportunities'
 
 @app.route('/GetAllService')
 def services():
