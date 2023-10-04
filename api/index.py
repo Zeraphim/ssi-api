@@ -104,7 +104,8 @@ def projects():
 			for row in project_data:
 				project_dict = {
 					"id": row[0],
-					"name": row[1]
+					"name": row[1],
+					"category": row[2]
 				}
 				project_list.append(project_dict)
 
@@ -277,4 +278,4 @@ def AddInquiry():
 
 
 # comment this out when running in vercel
-#app.run()
+app.run()
