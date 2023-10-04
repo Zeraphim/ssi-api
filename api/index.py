@@ -228,4 +228,4 @@ def AddInquiry():
 
 
 # comment this out when running in vercel
-app.run()
+#app.run()
