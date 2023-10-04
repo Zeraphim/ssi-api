@@ -79,8 +79,52 @@ def home():
 	return (data)
 
 @app.route('/GetAllProjects')
-def about():
-	return 'About'
+def projects():
+	# connecting to mariadb
+	try:
+
+		return_dict = {}
+		cols = ['id', 'name']
+
+		connection = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
+
+		if connection.is_connected():
+			cursor = connection.cursor()
+
+			show_databases_sql = "SELECT * FROM PROJECTS;"
+			cursor.execute(show_databases_sql)
+			project_data = cursor.fetchall()
+		
+			project_list = []
+			for row in project_data:
+				project_dict = {
+					"id": row[0],
+					"name": row[1]
+				}
+				project_list.append(project_dict)
+
+			# Convert the list of dictionaries to JSON
+			project_json = json.dumps(project_list, indent=4)
+
+			return project_json
+		
+
+	except mysql.connector.Error as error:
+		print("Error: {}".format(error))
+
+	finally:
+		if 'connection' in locals() and connection.is_connected():
+			cursor.close()
+			connection.close()
+			print("MySQL connection is closed.")
+
+	return 'Projects'
+
 
 @app.route('/GetAllDepartments')
 def departments():
@@ -184,4 +228,4 @@ def AddInquiry():
 
 
 # comment this out when running in vercel
-# app.run()
+app.run()
