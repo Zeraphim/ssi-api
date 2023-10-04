@@ -82,6 +82,55 @@ def home():
 def about():
 	return 'About'
 
+@app.route('/GetAllService')
+def services():
+
+    # connecting to mariadb
+    try:
+
+        return_dict = {}
+        cols = ['id', 'name', 'description']
+
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            show_services_sql = "SELECT * FROM SERVICES;"
+            cursor.execute(show_services_sql)
+            service_data = cursor.fetchall()
+        
+            service_list = []
+            for row in service_data:
+                service_dict = {
+                    "id": row[0],
+                    "name": row[1],
+                    "description": row[2]
+                }
+                service_list.append(service_dict)
+
+            # Convert the list of dictionaries to JSON
+            service_json = json.dumps(service_list, indent=4)
+
+            return service_json
+        
+
+    except mysql.connector.Error as error:
+        print("Error: {}".format(error))
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed.")
+
+    return 'Services'
+
 @app.route('/GetAllDepartments')
 def departments():
 
@@ -184,4 +233,4 @@ def AddInquiry():
 
 
 # comment this out when running in vercel
-# app.run()
+# app.run() # - uncomment to run in local
