@@ -31,6 +31,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
 	
+
 	data = {
 		"title": "This is a proof-of-concept API server. You can test each endpoint by creating a GET request for each one. The data they return is EXACTLY the same data that the frontend will expect.",
 		"endpoints": [
@@ -42,7 +43,35 @@ def home():
 				"example_request": "/getWebsiteData"
 			},
 			{
-				"url": "/getOpportunities",
+				"url": "/getAllProjects",
+				"params": [
+				{
+					"name": "id",
+					"type": "int",
+					"required": "true"
+				},
+				{
+					"name": "name",
+					"type": "string",
+					"required": "true"
+				},
+				{
+					"name": "category",
+					"type": "string",
+					"required": "true"
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"required": "true"
+				}
+				],
+				"method": "GET",
+				"description": "Returns a list of Projects.",
+				"example_request": "/getProjects"
+			},
+			{
+				"url": "/getAllOpportunity",
 				"params": [
 					{
 						"name": "department",
@@ -71,7 +100,99 @@ def home():
 				"method": "GET",
 				"description": "Returns an Opportunity with the same id.",
 				"example_request": "/getOpportunity?id=1"
-			}
+			},
+			{
+				"url": "/getAllDepartments",
+				"params": [
+				{
+					"name": "id",
+					"type": "int",
+					"required": "true"
+				},
+				{
+					"name": "name",
+					"type": "string",
+					"required": "true"
+				}
+				],
+				"method": "GET",
+				"description": "Returns a list of Projects.",
+				"example_request": "/getProjects"
+			},
+			{
+				"url": "/getAllProjects",
+				"params": [
+				{
+					"name": "id",
+					"type": "int",
+					"required": "true"
+				},
+				{
+					"name": "name",
+					"type": "string",
+					"required": "true"
+				},
+				{
+					"name": "category",
+					"type": "string",
+					"required": "true"
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"required": "true"
+				}
+				],
+				"method": "GET",
+				"description": "Returns a list of Projects.",
+				"example_request": "/getProjects"
+			},
+			{
+				"url": "/getAllService",
+				"params": [
+				{
+					"name": "id",
+					"type": "int",
+					"required": "true"
+				},
+				{
+					"name": "name",
+					"type": "string",
+					"required": "true"
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"required": "true"
+				}
+				],
+				"method": "GET",
+				"description": "Returns a list of Projects.",
+				"example_request": "/getAllService"
+			},
+			{
+				"url": "/getAllCategories",
+				"params": [
+				{
+					"name": "id",
+					"type": "int",
+					"required": "true"
+				},
+				{
+					"name": "name",
+					"type": "string",
+					"required": "true"
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"required": "true"
+				}
+				],
+				"method": "GET",
+				"description": "Returns a list of Categories.",
+				"example_request": "/getAllCategories"
+			},
 		]
 	}
 
@@ -178,7 +299,7 @@ def opportunity():
 
 	return 'Opportunities'
 
-@app.route('/GetAllService')
+@app.route('/getAllService')
 def services():
 
     # connecting to mariadb
@@ -227,7 +348,7 @@ def services():
 
     return 'Services'
 
-@app.route('/GetAllDepartments')
+@app.route('/getAllDepartments')
 def departments():
 
 	# connecting to mariadb
@@ -275,7 +396,7 @@ def departments():
 
 	return 'Departments'
 
-@app.route('/GetAllCategories')
+@app.route('/getAllCategories')
 def categories():
 	# connecting to mariadb
 	try:
@@ -294,7 +415,7 @@ def categories():
 			cursor.execute(show_databases_sql)
 			category_data = cursor.fetchall()
 		
-			category_list = {}
+			category_list = []
 			for row in category_data:
 				category_dict = {
 					"id": row[0],
@@ -318,7 +439,7 @@ def categories():
 			connection.close()
 			print("MySQL connection is closed.")
 
-	return 'Departments'
+	return 'Categories'
 
 
 @app.route('/AddInquiry')
@@ -329,4 +450,4 @@ def AddInquiry():
 
 
 # comment this out when running in vercel
-#app.run()
+app.run()
