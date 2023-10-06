@@ -117,7 +117,7 @@ def home():
                 ],
                 "method": "GET",
                 "description": "Returns a list of Projects.",
-                "example_request": "/getProjects"
+                "example_request": "/getDepartments"
             },
             {
                 "url": "/getAllProjects",
@@ -249,7 +249,7 @@ def websiteData():
     return 'Departments'
 
 
-@app.route('/GetAllProjects')
+@app.route('/getAllProjects')
 def projects():
     # connecting to mariadb
     try:
@@ -298,7 +298,7 @@ def projects():
     return 'Projects'
 
 
-@app.route('/GetAllOpportunity')
+@app.route('/getAllOpportunity')
 def opportunity():
     # connecting to mariadb
     try:
