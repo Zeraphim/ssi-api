@@ -491,13 +491,103 @@ def categories():
 
     return 'Categories'
 
+@app.route('/GetAllInquiry')
+def inquiries():
 
-@app.route('/AddInquiry')
-def AddInquiry():
+	try:
 
-    return 'Add Inquiry'
-    # outsystems
+		return_dict = {}
+		cols = ['inquiryId', 'name', 'email', 'serviceInquired', 'meetingDate']
+
+		connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+
+		if connection.is_connected():
+			cursor = connection.cursor()
+
+			show_inquiries_sql = "SELECT * FROM SERVICES;"
+			cursor.execute(show_inquiries_sql)
+			inquiries_data = cursor.fetchall()
+
+			inquiries_list = []
+			for row in inquiries_data:
+				inquiries_dict = {
+					"inquiryId" : row[0],
+					"name" : row[1],
+					"email" : row[2],
+					"serviceInquired" : row[3],
+					"meetingDate" : row[4]
+				}
+				inquiries_list.append(inquiries_dict)
+
+			# Convert the list of dictionaries to JSON
+			inquiries_json = json.dumps(inquiries_list, indent = 4)
+
+			return inquiries_json
+			
+	except mysql.connector.Error as error:
+		print("Error: {}".format(error))
+    
+	finally:
+		if 'connection' in locals() and connection.is_connected():
+			cursor.close()
+			connection.close()
+			print("MySQL connection is closed.")
+
+	return 'Inquiries'
+
+@app.route('/GetAllPartners')
+def partners():
+	# connecting to mariadb
+	try:
+
+		return_dict = {}
+		cols = ['partnerID', 'name', 'imageData']
+
+		connection = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)	
+
+		if connection.is_connected():
+			cursor = connection.cursor()
+
+			show_database_sql = "SELECT * FROM CATEGORY;"
+			cursor.execute(show_database_sql)
+			partners_data = cursor.fetchall()
+
+			partners_list = {}
+			for row in partners_data:
+				partners_dict = {
+					"partnerID" : row[0],
+					"name" : row[1],
+					"imageData" : row[2]
+				}
+
+			partners_list.append(partners_dict)
+
+			# Convert the list of dictionaries to JSON
+			partners_json = json.dumps(partners_list, indent = 4)
+
+			return partners_json
+		
+	except mysql.connector.Error as error:
+		print("Error: {}".format(error))
+    
+	finally:
+		if 'connection' in locals() and connection.is_connected():
+			cursor.close()
+			connection.close()
+			print("MySQL connection is closed.")
+
+	return 'Partners'
 
 
 # comment this out when running in vercel
-app.run()
+# app.run() # - uncomment to run in local	``
