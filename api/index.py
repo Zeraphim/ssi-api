@@ -256,6 +256,7 @@ def websiteData():
 				"partners": [], # partnerID, name, imageData
 			   }
 			
+			# Get Categories
 			show_databases_sql = "SELECT * FROM category;"
 			cursor.execute(show_databases_sql)
 			categories_data = cursor.fetchall()
@@ -268,6 +269,7 @@ def websiteData():
 				}
 				all_dict['categories'].append(categories)
 
+			# Get Projects
 			show_databases_sql = "SELECT * FROM projects;"
 			cursor.execute(show_databases_sql)
 			projects_data = cursor.fetchall()
@@ -285,6 +287,24 @@ def websiteData():
 					'category': row[4]
 				}
 				all_dict['projects'].append(projects)
+
+			# "partners": [], # partnerID, name, imageData
+			# Get Partners
+			show_databases_sql = "SELECT * FROM partners;"
+			cursor.execute(show_databases_sql)
+			partners_data = cursor.fetchall()
+
+			for row in partners_data:
+
+				photo_bytes = row[2]
+				photo_str = base64.b64encode(photo_bytes).decode('utf-8')
+
+				partners = {
+					'partnerID': row[0],
+					'name': row[1],
+					'imageData': photo_str
+				}
+				all_dict['partners'].append(partners)
 
 			return jsonify(all_dict)
 
@@ -639,4 +659,4 @@ def partners():
 
 
 # comment this out when running in vercel
-app.run() # - uncomment to run in local	``
+#app.run() # - uncomment to run in local	``
