@@ -95,10 +95,10 @@ try:
             elif response == "4":
                 photo_path = "/Users/zeraphim/Desktop/a.png"
 
-                q = """INSERT INTO Partners (partnerID, name, imageData) VALUES (%s, %s, %s);"""
+                q = """INSERT INTO Partners (name, imageData) VALUES (%s, %s);"""
                 convertPic = convertToBinary(
-                    r"C:\Users\Zeraphim\Desktop\Outsystems1.png")
-                values = (2, "OutSystems", convertPic)
+                    r"/Users/zeraphim/Desktop/Nagios1.png")
+                values = ("Nagios", convertPic)
 
                 cursor.execute(q, values)
 
