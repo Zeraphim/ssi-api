@@ -454,9 +454,9 @@ def services():
 				service_list.append(service_dict)
 
 			# Convert the list of dictionaries to JSON
-			service_json = json.dumps(service_list, indent=4)
+			# service_json = json.dumps(service_list, indent=4)
 
-			return service_json
+			return jsonify(service_list)
 
 	except mysql.connector.Error as error:
 		print("Error: {}".format(error))
