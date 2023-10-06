@@ -282,7 +282,9 @@ def projects():
                 project_list.append(project_dict)
 
             # Convert the list of dictionaries to JSON
-            return jsonify(project_dict)
+            project_json = json.dumps(project_list, indent=4)
+
+            return project_json
 
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
@@ -332,8 +334,9 @@ def opportunity():
                 opportunity_list.append(opportunity_dict)
 
             # Convert the list of dictionaries to JSON
-            return jsonify(opportunity_dict)
+            project_json = json.dumps(opportunity_list, indent=4)
 
+            return project_json
 
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
@@ -380,9 +383,11 @@ def services():
                 service_list.append(service_dict)
 
             # Convert the list of dictionaries to JSON
-            service_json = json.dumps(service_list, indent=4)
+            # service_json = json.dumps(service_list, indent=4)
 
-            return service_json
+            # Convert the list to a JSON object
+
+            return jsonify(service_list)
 
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
