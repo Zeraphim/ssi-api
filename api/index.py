@@ -46,52 +46,6 @@ def home():
 				"example_request": "/getWebsiteData"
 			},
 			{
-				"url": "/getAllProjects",
-				"params": [
-					{
-						"name": "id",
-						"type": "int",
-						"required": "true"
-					},
-					{
-						"name": "name",
-						"type": "string",
-						"required": "true"
-					},
-					{
-						"name": "category",
-						"type": "string",
-						"required": "true"
-					},
-					{
-						"name": "description",
-						"type": "string",
-						"required": "true"
-					}
-				],
-				"method": "GET",
-				"description": "Returns a list of Projects.",
-				"example_request": "/getProjects"
-			},
-			{
-				"url": "/getAllOpportunity",
-				"params": [
-					{
-						"name": "department",
-						"type": "string",
-						"required": "true",
-					},
-					{
-						"name": "experience_level",
-						"type": "string",
-						"required": "true"
-					}
-				],
-				"method": "GET",
-				"description": "Returns a list of Opportunity that fulfills the Department and Experience Level filters.",
-				"example_request": "/getOpportunities?department=Engineering&experience_level=Internship"
-			},
-			{
 				"url": "/getOpportunity",
 				"params": [
 					{
@@ -119,7 +73,7 @@ def home():
 					}
 				],
 				"method": "GET",
-				"description": "Returns a list of Projects.",
+				"description": "Returns a list of Departments.",
 				"example_request": "/getDepartments"
 			},
 			{
@@ -170,7 +124,7 @@ def home():
 					}
 				],
 				"method": "GET",
-				"description": "Returns a list of Projects.",
+				"description": "Returns a list of Services.",
 				"example_request": "/getAllService"
 			},
 			{
