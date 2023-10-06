@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 import mysql.connector
 import json
 import base64
+from flask_cors import CORS
 
 '''
 
@@ -28,6 +29,7 @@ database = "ssi"
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
