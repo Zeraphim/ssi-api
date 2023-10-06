@@ -31,6 +31,17 @@ database = "ssi"
 app = Flask(__name__)
 CORS(app)
 
+'''
+
+To Add:
+
+Calendar Route
+
+Check
+schedule.svelte
+
+'''
+
 
 @app.route('/')
 def home():
@@ -42,7 +53,7 @@ def home():
 				"url": "/getWebsiteData",
 				"params": [],
 				"method": "GET",
-				"description": "Returns a list of Service Categories and Projects that are displayed on the website.",
+				"description": "Returns all the tables in the database in JSON object format.",
 				"example_request": "/getWebsiteData"
 			},
 			{
