@@ -3,6 +3,11 @@ import mysql.connector
 import os
 import time
 
+import random
+import string
+from datetime import datetime, timedelta
+
+
 
 # this is a comment
 # this is a test
@@ -49,7 +54,7 @@ try:
             os.system('clear')
 
             print(
-                f"\n> {'='*9} S S I  D B {'='*9} <\n\n1: Show All Databases\n2: Show Tables \n3. Run Command\n4. Pic Upload\n5: Exit\n")
+                f"\n> {'='*9} S S I  D B {'='*9} <\n\n1: Show All Databases\n2: Show Tables \n3. Run Command\n4. Pic Upload\n5. Insert Data\n6: Exit\n")
             response = input("> ")
 
             if response == "1":
@@ -81,6 +86,7 @@ try:
                 input('\nPaused enter any key: ')
 
             elif response == "3":
+
                 q = input("\nEnter Querry: ")
 
                 cursor.execute(q)
@@ -93,16 +99,44 @@ try:
                 input('\nPaused enter any key: ')
 
             elif response == "4":
-                photo_path = "/Users/zeraphim/Desktop/a.png"
 
-                q = """INSERT INTO Partners (name, imageData) VALUES (%s, %s);"""
+                # Projects Insert
+                q = """INSERT INTO Projects (name, description, photo, category) VALUES (%s, %s, %s, %s);"""
                 convertPic = convertToBinary(
-                    r"/Users/zeraphim/Desktop/Nagios1.png")
-                values = ("Nagios", convertPic)
+                    r"/Users/zeraphim/Desktop/SSI-Images/webp_images/c2-travelapp.webp")
+                values = ("Travel Companion App", "A travel companion mobile application for a client.", convertPic, 2)
 
                 cursor.execute(q, values)
 
             elif response == "5":
+
+                # Inquiries Insert Statements
+                names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
+                services = [1, 2, 3, 4, 5]
+                emails = ['{}@example.com'.format(name.lower()) for name in names]
+                dates = [datetime.now() + timedelta(days=i) for i in range(3)]
+                confirmed = [True, False]
+
+                names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
+                services = [1, 2, 3, 4, 5]
+                emails = ['{}@example.com'.format(name.lower()) for name in names]
+                dates = [datetime.now() + timedelta(days=i) for i in range(3)]
+                confirmed = [True, False]
+
+                for i in range(3):
+                    name = random.choice(names)
+                    email = random.choice(emails)
+                    service = random.choice(services)
+                    date = random.choice(dates).strftime('%Y-%m-%d')
+                    is_confirmed = random.choice(confirmed)
+
+                    q = """INSERT INTO Inquiries (name, email, serviceInquired, meetingDate, isConfirmed)
+                        VALUES (%s, %s, %s, %s, %s);"""
+                    values = (name, email, service, date, is_confirmed)
+
+                    cursor.execute(q, values)
+
+            elif response == "6":
                 break
 
             else:
