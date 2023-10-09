@@ -19,10 +19,10 @@ Missing:
 
 '''
 
-host = "ssi-mariadb-test.mariadb.database.azure.com"
-user = "ssi@ssi-mariadb-test"
-password = "adminTest1"
-database = "ssi"
+host = "ssi-database-test.crbajdmpmr20.ap-southeast-2.rds.amazonaws.com"
+user = "APIReadOnly"
+password = "[%BmJz:SoEf72om"
+database = "db"
 
 
 # cnx = mysql.connector.connect(user="ssi@ssi-mariadb-test", password="adminTest1", host="ssi-mariadb-test.mariadb.database.azure.com", port=3306, database={your_database}, ssl_ca={ca-cert filename}, ssl_verify_cert=true)

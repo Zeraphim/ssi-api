@@ -20,10 +20,17 @@ from datetime import datetime, timedelta
 # password = 'root321'
 # database = 'mysql'
 
-host = "ssi-mariadb-test.mariadb.database.azure.com"
-user = "ssi@ssi-mariadb-test"
-password = "adminTest1"
+# Admin (Read/Write)
+host = "ssi-database-test.crbajdmpmr20.ap-southeast-2.rds.amazonaws.com"
+user = "OutSystemsAdmin"
+password = "uK4FQkoYqNDHfzC"
 database = "ssi"
+
+# Api Read Only
+# host = "ssi-database-test.crbajdmpmr20.ap-southeast-2.rds.amazonaws.com"
+# user = "APIReadOnly"
+# password = "[%BmJz:SoEf72om"
+# database = "ssi"
 
 
 # cnx = mysql.connector.connect(user="ssi@ssi-mariadb-test", password="adminTest1", host="ssi-mariadb-test.mariadb.database.azure.com", port=3306, database={your_database}, ssl_ca={ca-cert filename}, ssl_verify_cert=true)
@@ -100,13 +107,21 @@ try:
 
             elif response == "4":
 
-                # Projects Insert
-                q = """INSERT INTO Projects (name, description, photo, category) VALUES (%s, %s, %s, %s);"""
+                # Partners Insert
+                q = """INSERT INTO partners (name, photo) VALUES (%s, %s);"""
                 convertPic = convertToBinary(
-                    r"/Users/zeraphim/Desktop/SSI-Images/webp_images/c2-travelapp.webp")
-                values = ("Travel Companion App", "A travel companion mobile application for a client.", convertPic, 2)
-
+                    r"/Users/zeraphim/Desktop/SSI-Images/logos/AWS1.png")
+                values = ("AWS", convertPic)
+ 
                 cursor.execute(q, values)
+
+                # Projects Insert
+                # q = """INSERT INTO Projects (name, description, photo, category) VALUES (%s, %s, %s, %s);"""
+                # convertPic = convertToBinary(
+                #     r"/Users/zeraphim/Desktop/SSI-Images/webp_images/c2-travelapp.webp")
+                # values = ("Travel Companion App", "A travel companion mobile application for a client.", convertPic, 2)
+
+                # cursor.execute(q, values)
 
             elif response == "5":
 
