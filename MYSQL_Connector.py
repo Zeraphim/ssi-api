@@ -21,13 +21,13 @@ from datetime import datetime, timedelta
 # database = 'mysql'
 
 # Admin (Read/Write)
-host = "ssi-database-test.crbajdmpmr20.ap-southeast-2.rds.amazonaws.com"
-user = "OutSystemsAdmin"
+host = " ec2-13-211-161-99.ap-southeast-2.compute.amazonaws.com"
+user = "OSAdmin"
 password = "uK4FQkoYqNDHfzC"
 database = "ssi"
 
 # Api Read Only
-# host = "ssi-database-test.crbajdmpmr20.ap-southeast-2.rds.amazonaws.com"
+# host = "ec2-13-211-161-99.ap-southeast-2.compute.amazonaws.com"
 # user = "APIReadOnly"
 # password = "[%BmJz:SoEf72om"
 # database = "ssi"
