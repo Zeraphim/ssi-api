@@ -20,8 +20,17 @@ from datetime import datetime, timedelta
 # password = 'root321'
 # database = 'mysql'
 
+import mariadb
+import sys
+
 # Admin (Read/Write)
-host = " ec2-13-211-161-99.ap-southeast-2.compute.amazonaws.com"
+# host = "13.229.7.124"
+# user = "OSAdmin"
+# password = "uK4FQkoYqNDHfzC"
+# database = "ssi"
+
+# Admin (Instance)
+host = "3.27.249.230"
 user = "OSAdmin"
 password = "uK4FQkoYqNDHfzC"
 database = "ssi"
