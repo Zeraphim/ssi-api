@@ -40,7 +40,7 @@ import sys
 # Remote Admin
 host = "3.27.249.230"
 user = "remoteAdmin"
-password = "adminTest1x"
+password = "adminTest1"
 database = "ssi"
 
 # Api Read Only
