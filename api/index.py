@@ -66,17 +66,17 @@ def home():
 			},
 			{
 				"url": "/getTakenDates",
-				"params": [month, year],
+				"params": "[month, year]",
 				"method": "GET",
 				"description": "Return all days of the month in the year that have NO timeslots left",
 				"example_request": "/getTakenDates?month=10&year=2023"
 			},
 			{
 				"url": "/getTimeSlots",
-				"params": [day, month, year],
+				"params": "[day, month, year]",
 				"method": "GET",
 				"description": "Return all time slots available for a day",
-				"example_request": "/getTimeSlots?day=16&month=10&year=2023"
+				"example_request": "/getTimeSlots?day=15&month=10&year=2023"
 			},
 			{
 				"url": "/getOpportunity",
@@ -673,7 +673,7 @@ def get_available_time_slots():
         cursor = conn.cursor()
 
         # Query the Calendar table for the given date
-        cursor.execute("SELECT timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5 FROM Calendar WHERE calendar_date = %s", (date_str,))
+        cursor.execute("SELECT timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5 FROM Calendar_Test2 WHERE calendar_date = %s", (date_str,))
         row = cursor.fetchone()
 
         if row is not None:
@@ -715,7 +715,7 @@ def taken_dates():
         cursor = conn.cursor()
 
         # Formulate the SQL query to select days with at least one timeslot booked
-        sql_query = f"SELECT DAY(calendar_date) FROM Calendar " \
+        sql_query = f"SELECT DAY(calendar_date) FROM Calendar_Test2 " \
                     f"WHERE YEAR(calendar_date) = {year} " \
                     f"AND MONTH(calendar_date) = {month} " \
                     f"AND (timeslot_1 IS NOT NULL " \
@@ -736,48 +736,6 @@ def taken_dates():
 
     except Exception as e:
         return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
-
-@app.route('/GetSchedule', methods=['GET'])
-def get_schedule():
-
-	try:
-		# Parse query parameters if needed (e.g., month and year)
-		month = request.args.get('month', type=int)
-		year = request.args.get('year', type=int)
-
-		# Connect to the database
-		conn = mysql.connector.connect(
-			host=host,
-			user=user,
-			password=password,
-			database=database
-		)
-
-		cursor = conn.cursor()
-
-		# Define the SQL query to fetch the schedule data
-		query = """
-		SELECT meeting_date, timeslot
-		FROM Inquiry
-		WHERE MONTH(meeting_date) = %s AND YEAR(meeting_date) = %s
-		"""
-
-		cursor.execute(query, (month, year))
-
-		# Fetch the results
-		results = cursor.fetchall()
-
-		# Create a list of schedules
-		schedule = [{'meeting_date': str(date), 'timeslot': timeslot} for date, timeslot in results]
-
-		# Close the database connection
-		cursor.close()
-		conn.close()
-
-		return jsonify(schedule)
-
-	except Exception as e:
-		return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
 
 # comment this out when running in vercel
 app.run() # - uncomment to run in local

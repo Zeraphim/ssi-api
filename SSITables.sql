@@ -118,23 +118,23 @@ CREATE TABLE Inquiries (
     confirmed tinyint(1) default 0;
 );
 
-CREATE TABLE Inquiries_Test (inquiryID INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), service_ID int(11), meeting_date DATE, confirmed tinyint(1) default 0);
+CREATE TABLE Inquiries_Test2 (inquiryID INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), service_ID int(11), meeting_date DATE, confirmed tinyint(1) default 0);
 
 -- Insert IDS: 1, 16, 17, 18
 
-INSERT INTO Inquiries_Test (name, email, service_ID, meeting_date, confirmed)
+INSERT INTO Inquiries_Test2 (name, email, service_ID, meeting_date, confirmed)
 VALUES
   ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1),
-  ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0),
-  ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1),
-  ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0),
-  ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
+  ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-15', 0),
+  ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-15', 1),
+  ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-15', 0),
+  ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-15', 1);
 
-INSERT INTO Inquiries_Test (name, email, service_ID, meeting_date, confirmed) VALUES ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1), ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0), ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1), ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0), ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
+INSERT INTO Inquiries_Test2_2 (name, email, service_ID, meeting_date, confirmed) VALUES ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1), ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0), ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1), ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0), ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
   
 -- Calendar
 
-CREATE TABLE Calendar (
+CREATE TABLE CalendarTest2 (
     calendar_id INT AUTO_INCREMENT PRIMARY KEY,
     calendar_date DATE,
     timeslot_1 int(11),
@@ -143,14 +143,14 @@ CREATE TABLE Calendar (
     timeslot_4 int(11),
     timeslot_5 int(11),
 
-    FOREIGN KEY (timeslot_1) REFERENCES Inquiries_Test(inquiryID),
-    FOREIGN KEY (timeslot_2) REFERENCES Inquiries_Test(inquiryID),
-    FOREIGN KEY (timeslot_3) REFERENCES Inquiries_Test(inquiryID),
-    FOREIGN KEY (timeslot_4) REFERENCES Inquiries_Test(inquiryID),
-    FOREIGN KEY (timeslot_5) REFERENCES Inquiries_Test(inquiryID)
+    FOREIGN KEY (timeslot_1) REFERENCES Inquiries_Test2(inquiryID),
+    FOREIGN KEY (timeslot_2) REFERENCES Inquiries_Test2(inquiryID),
+    FOREIGN KEY (timeslot_3) REFERENCES Inquiries_Test2(inquiryID),
+    FOREIGN KEY (timeslot_4) REFERENCES Inquiries_Test2(inquiryID),
+    FOREIGN KEY (timeslot_5) REFERENCES Inquiries_Test2(inquiryID)
 );
 
-CREATE TABLE Calendar (calendar_id INT AUTO_INCREMENT PRIMARY KEY, calendar_date DATE, timeslot_1 int(11), timeslot_2 int(11), timeslot_3 int(11), timeslot_4 int(11), timeslot_5 int(11), FOREIGN KEY (timeslot_1) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_2) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_3) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_4) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_5) REFERENCES Inquiries_Test(inquiryID));
+CREATE TABLE Calendar_Test2 (calendar_id INT AUTO_INCREMENT PRIMARY KEY, calendar_date DATE, timeslot_1 int(11), timeslot_2 int(11), timeslot_3 int(11), timeslot_4 int(11), timeslot_5 int(11), FOREIGN KEY (timeslot_1) REFERENCES Inquiries_Test2(inquiryID), FOREIGN KEY (timeslot_2) REFERENCES Inquiries_Test2(inquiryID), FOREIGN KEY (timeslot_3) REFERENCES Inquiries_Test2(inquiryID), FOREIGN KEY (timeslot_4) REFERENCES Inquiries_Test2(inquiryID), FOREIGN KEY (timeslot_5) REFERENCES Inquiries_Test2(inquiryID));
 
 
 -- 21, 22, 23, 24, 25
