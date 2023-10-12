@@ -68,8 +68,15 @@ def home():
 				"url": "/getTakenDates",
 				"params": [month, year],
 				"method": "GET",
-				"description": "Return all days of the month in the year that have NO timeslots left in this format",
+				"description": "Return all days of the month in the year that have NO timeslots left",
 				"example_request": "/getTakenDates?month=10&year=2023"
+			},
+			{
+				"url": "/getTimeSlots",
+				"params": [day, month, year],
+				"method": "GET",
+				"description": "Return all time slots available for a day",
+				"example_request": "/getTimeSlots?day=16&month=10&year=2023"
 			},
 			{
 				"url": "/getOpportunity",
@@ -642,59 +649,51 @@ def partners():
 
 	return 'Partners'
 
+# Example:
+# /getTimeSlots?day=16&month=10&year=2023
 
-# /getTakenDates (URL params: month, year)
+@app.route('/getTimeSlots', methods=['GET'])
+def get_available_time_slots():
+    try:
+        day = request.args.get('day', type=int)
+        month = request.args.get('month', type=int)
+        year = request.args.get('year', type=int)
 
-# Returns all days of the month in the year that have NO timeslots left
+        # Convert the date parameters to a date string in YYYY-MM-DD format
+        date_str = f'{year:04d}-{month:02d}-{day:02d}'
 
-# [3, 4, 17 ,21]
+        # Connect to the database
+        conn = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
 
-# /getTimeslots (URL Params: day, month, year)
-'''
+        cursor = conn.cursor()
 
-Code Example:
+        # Query the Calendar table for the given date
+        cursor.execute("SELECT timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5 FROM Calendar WHERE calendar_date = %s", (date_str,))
+        row = cursor.fetchone()
 
-timeslots = [10, 11, 12, 1, 2]
+        if row is not None:
+            # Get the list of all available time slots
+            timeslots = ['10:00', '11:00', '12:00', '13:00', '14:00']
+            available_slots = [timeslots[i] for i in range(5) if row[i] is None]
 
-queryResult = [286, 2023-10-13, null, null, null, null, null]
+            cursor.close()
+            conn.close()
 
-resultList = [] # List to return
+            return jsonify(available_slots)
 
-if queryResult[2] == None:
-    resultList.append[timeslots[1]]
-example
+        cursor.close()
+        conn.close()
 
-'''
-'''
-@app.route('/getTakenDates', methods=['GET'])
-def taken_dates():
+        return jsonify({'error': 'No data found for the given date'}), 404
 
-	try:
-		# Parse query parameters if needed (e.g., month and year)
-		month = request.args.get('month', type=int)
-		year = request.args.get('year', type=int)
+    except Exception as e:
+        return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
 
-		# Connect to the database
-		conn = mysql.connector.connect(
-			host=host,
-			user=user,
-			password=password,
-			database=database
-		)
-
-		cursor = conn.cursor()
-
-
-
-		cursor.close()
-		conn.close()
-
-		return 
-
-	except Exception as e:
-		return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
-
-'''
 
 # Example:
 # /getTakenDates?month=10&year=2023
