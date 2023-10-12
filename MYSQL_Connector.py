@@ -32,9 +32,15 @@ import sys
 # database = "ssi"
 
 # Admin (Instance)
+# host = "3.27.249.230"
+# user = "OSAdmin"
+# password = "uK4FQkoYqNDHfzC"
+# database = "ssi"
+
+# Remote Admin
 host = "3.27.249.230"
-user = "OSAdmin"
-password = "uK4FQkoYqNDHfzC"
+user = "remoteAdmin"
+password = "adminTest1x"
 database = "ssi"
 
 # Api Read Only

@@ -120,9 +120,9 @@ CREATE TABLE Inquiries (
 
 CREATE TABLE Inquiries (inquiryID INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), serviceInquired int, meetingDate DATE, isConfirmed BOOL);
 
-(1, 'testInquiry', 'test@test.com', 1, datetime.date(2023, 10, 6
+INSERT INTO Inquiry (name, email, service_ID, meeting_date, confirmed) VALUES ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1), ('Jane Smith', 'jane.smith@example.com', 1, '2023-10-18', 0), ('Alice Johnson', 'alice.johnson@example.com', 1, '2023-10-20', 1);
 
-insert INTO Inquiries(name, email, serviceInquired, meetingDate, isConfirmed) VALUES ("testInquiry", "test@test.com", 1, datetime.date(2023, 10, 6), false);
+SELECT meeting_date FROM Inquiry WHERE MONTH(meeting_date) = 10 AND YEAR(meeting_date) = 2023;
 
 -- Service
 
@@ -181,8 +181,6 @@ CREATE TABLE Calendar (
 
 -- Opportunities
 
-INSERT INTO Opportunities (title, location, department, experience_level, description, qualifications, skills, responsibilities) VALUES('Software Developer', 'New York', 'Engineering', 'Entry Level', 'We are looking for a software developer to join our team', 'BS degree in Computer Science', 'Java Python SQL', 'Develop and maintain software applications');
-    ('Marketing Manager', 'Los Angeles', 'Marketing', 'Mid Level', 'We are hiring a Marketing Manager to lead our marketing campaigns.', 'Bachelor's degree in Marketing', 'Digital marketing, SEO, SEM', 'Plan and execute marketing strategies.'),
-    ('Sales Representative', 'Chicago', 'Sales', 'Entry Level', 'Join our sales team and help us drive revenue growth.', 'High School diploma', 'Sales, negotiation, communication', 'Identify and approach potential clients.');
+INSERT INTO Opportunities (title, location, department, experience_level, description, qualifications, skills, responsibilities) VALUES('Software Developer', 'New York', 'Engineering', 'Entry Level', 'We are looking for a software developer to join our team', 'BS degree in Computer Science', 'Java Python SQL', 'Develop and maintain software applications'), ('Marketing Manager', 'Los Angeles', 'Marketing', 'Mid Level', 'We are hiring a Marketing Manager to lead our marketing campaigns.', "Bachelor's degree in Marketing", 'Digital marketing, SEO, SEM', 'Plan and execute marketing strategies.'), ('Sales Representative', 'Chicago', 'Sales', 'Entry Level', 'Join our sales team and help us drive revenue growth.', 'High School diploma', 'Sales, negotiation, communication', 'Identify and approach potential clients.');
 
 

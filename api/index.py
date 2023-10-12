@@ -1,7 +1,7 @@
 # How to use
 # http://127.0.0.1:5000/api/hello
 
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 import mysql.connector
 import json
 import base64
@@ -32,7 +32,7 @@ database = "db"
 app = Flask(__name__)
 
 app.wsgi_app = ProxyFix(
-    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+	app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
 
 CORS(app)
@@ -197,28 +197,28 @@ def websiteData():
 			
 			"""
 			
-            # Fetch categories data from the "Categories" table
-            cursor.execute("SELECT * FROM Categories")
-            categories = cursor.fetchall()
+			# Fetch categories data from the "Categories" table
+			cursor.execute("SELECT * FROM Categories")
+			categories = cursor.fetchall()
 
-            # Fetch other data (projects, testimonials, partners) as needed
+			# Fetch other data (projects, testimonials, partners) as needed
 
-            # Create a dictionary with the structure you want
-            data = {
-                "categories": [],
-                "projects": [],  # Add your projects data here
-                "testimonials": [],  # Add your testimonials data here
-                "partners": []  # Add your partners data here
-            }
+			# Create a dictionary with the structure you want
+			data = {
+				"categories": [],
+				"projects": [],  # Add your projects data here
+				"testimonials": [],  # Add your testimonials data here
+				"partners": []  # Add your partners data here
+			}
 
-            # Populate the "categories" key with the fetched data
-            for category in categories:
-                category_dict = {
-                    'id': category[0],
-                    'name': category[1],
-                    'description': category[2]
-                }
-                data["categories"].append(category_dict)
+			# Populate the "categories" key with the fetched data
+			for category in categories:
+				category_dict = {
+					'id': category[0],
+					'name': category[1],
+					'description': category[2]
+				}
+				data["categories"].append(category_dict)
 
 			
 			"""
@@ -544,11 +544,11 @@ def inquiries():
 		cols = ['inquiryId', 'name', 'email', 'serviceInquired', 'meetingDate']
 
 		connection = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=database
-        )
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
 
 		if connection.is_connected():
 			cursor = connection.cursor()
@@ -575,7 +575,7 @@ def inquiries():
 			
 	except mysql.connector.Error as error:
 		print("Error: {}".format(error))
-    
+	
 	finally:
 		if 'connection' in locals() and connection.is_connected():
 			cursor.close()
@@ -623,7 +623,7 @@ def partners():
 		
 	except mysql.connector.Error as error:
 		print("Error: {}".format(error))
-    
+	
 	finally:
 		if 'connection' in locals() and connection.is_connected():
 			cursor.close()
@@ -633,5 +633,49 @@ def partners():
 	return 'Partners'
 
 
+
+@app.route('/GetSchedule', methods=['GET'])
+def get_schedule():
+
+	try:
+		# Parse query parameters if needed (e.g., month and year)
+		month = request.args.get('month', type=int)
+		year = request.args.get('year', type=int)
+
+		# Connect to the database
+		conn = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
+
+		cursor = conn.cursor()
+
+		# Define the SQL query to fetch the schedule data
+		query = """
+		SELECT meeting_date, timeslot
+		FROM Inquiry
+		WHERE MONTH(meeting_date) = %s AND YEAR(meeting_date) = %s
+		"""
+
+		cursor.execute(query, (month, year))
+
+		# Fetch the results
+		results = cursor.fetchall()
+
+		# Create a list of schedules
+		schedule = [{'meeting_date': str(date), 'timeslot': timeslot} for date, timeslot in results]
+
+		# Close the database connection
+		cursor.close()
+		conn.close()
+
+		return jsonify(schedule)
+
+	except Exception as e:
+		return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
+
+
 # comment this out when running in vercel
-#app.run() # - uncomment to run in local	``
+app.run() # - uncomment to run in local
