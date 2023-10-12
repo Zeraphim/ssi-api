@@ -676,6 +676,5 @@ def get_schedule():
 	except Exception as e:
 		return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
 
-
 # comment this out when running in vercel
 app.run() # - uncomment to run in local
