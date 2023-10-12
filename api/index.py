@@ -20,10 +20,10 @@ Missing:
 
 '''
 
-host = "ssi-database-test.crbajdmpmr20.ap-southeast-2.rds.amazonaws.com"
-user = "APIReadOnly"
-password = "[%BmJz:SoEf72om"
-database = "db"
+host = "3.27.249.230"
+user = "remoteAdmin"
+password = "adminTest1"
+database = "ssi"
 
 
 # cnx = mysql.connector.connect(user="ssi@ssi-mariadb-test", password="adminTest1", host="ssi-mariadb-test.mariadb.database.azure.com", port=3306, database={your_database}, ssl_ca={ca-cert filename}, ssl_verify_cert=true)
@@ -232,13 +232,13 @@ def websiteData():
 			   }
 			
 			# Get Categories
-			show_databases_sql = "SELECT * FROM category;"
+			show_databases_sql = "SELECT * FROM categories;"
 			cursor.execute(show_databases_sql)
 			categories_data = cursor.fetchall()
 
 			for row in categories_data:
 				categories = {
-					'id': row[0],
+					'categoryId': row[0],
 					'name': row[1],
 					'description': row[2]
 				}
@@ -251,15 +251,18 @@ def websiteData():
 
 			for row in projects_data:
 
-				photo_bytes = row[3]
-				photo_str = base64.b64encode(photo_bytes).decode('utf-8')
+				# photo_bytes = row[3]
+				# photo_str = base64.b64encode(photo_bytes).decode('utf-8')
 
 				projects = {
 					'id': row[0],
-					'name': row[1],
+					'title': row[1],
+					'category': row[2],
 					'description': row[2],
-					'photo': photo_str,
-					'category': row[4]
+					'photo': row[3],
+					'name': row[4],
+					'logo_url': row[5],
+					'year': row[6]
 				}
 				all_dict['projects'].append(projects)
 
@@ -271,13 +274,13 @@ def websiteData():
 
 			for row in partners_data:
 
-				photo_bytes = row[2]
-				photo_str = base64.b64encode(photo_bytes).decode('utf-8')
+				# photo_bytes = row[2]
+				# photo_str = base64.b64encode(photo_bytes).decode('utf-8')
 
 				partners = {
 					'partnerID': row[0],
 					'name': row[1],
-					'imageData': photo_str
+					'photo': row[2]
 				}
 				all_dict['partners'].append(partners)
 
