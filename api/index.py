@@ -65,6 +65,13 @@ def home():
 				"example_request": "/getWebsiteData"
 			},
 			{
+				"url": "/getTakenDates",
+				"params": [month, year],
+				"method": "GET",
+				"description": "Return all days of the month in the year that have NO timeslots left in this format",
+				"example_request": "/getTakenDates?month=10&year=2023"
+			},
+			{
 				"url": "/getOpportunity",
 				"params": [
 					{
