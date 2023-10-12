@@ -636,6 +636,100 @@ def partners():
 	return 'Partners'
 
 
+# /getTakenDates (URL params: month, year)
+
+# Returns all days of the month in the year that have NO timeslots left
+
+# [3, 4, 17 ,21]
+
+# /getTimeslots (URL Params: day, month, year)
+'''
+
+Code Example:
+
+timeslots = [10, 11, 12, 1, 2]
+
+queryResult = [286, 2023-10-13, null, null, null, null, null]
+
+resultList = [] # List to return
+
+if queryResult[2] == None:
+    resultList.append[timeslots[1]]
+example
+
+'''
+'''
+@app.route('/getTakenDates', methods=['GET'])
+def taken_dates():
+
+	try:
+		# Parse query parameters if needed (e.g., month and year)
+		month = request.args.get('month', type=int)
+		year = request.args.get('year', type=int)
+
+		# Connect to the database
+		conn = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
+
+		cursor = conn.cursor()
+
+
+
+		cursor.close()
+		conn.close()
+
+		return 
+
+	except Exception as e:
+		return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
+
+'''
+
+# Example:
+# /getTakenDates?month=10&year=2023
+@app.route('/getTakenDates', methods=['GET'])
+def taken_dates():
+    try:
+        # Parse query parameters if needed (e.g., month and year)
+        month = request.args.get('month', type=int)
+        year = request.args.get('year', type=int)
+
+        # Connect to the database
+        conn = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+
+        cursor = conn.cursor()
+
+        # Formulate the SQL query to select days with at least one timeslot booked
+        sql_query = f"SELECT DAY(calendar_date) FROM Calendar " \
+                    f"WHERE YEAR(calendar_date) = {year} " \
+                    f"AND MONTH(calendar_date) = {month} " \
+                    f"AND (timeslot_1 IS NOT NULL " \
+                    f"OR timeslot_2 IS NOT NULL " \
+                    f"OR timeslot_3 IS NOT NULL " \
+                    f"OR timeslot_4 IS NOT NULL " \
+                    f"OR timeslot_5 IS NOT NULL)"
+
+        cursor.execute(sql_query)
+
+        # Fetch the results as a list of days
+        result = [row[0] for row in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
 
 @app.route('/GetSchedule', methods=['GET'])
 def get_schedule():

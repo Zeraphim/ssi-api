@@ -120,6 +120,18 @@ CREATE TABLE Inquiries (
 
 CREATE TABLE Inquiries_Test (inquiryID INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), service_ID int(11), meeting_date DATE, confirmed tinyint(1) default 0);
 
+-- Insert IDS: 1, 16, 17, 18
+
+INSERT INTO Inquiries_Test (name, email, service_ID, meeting_date, confirmed)
+VALUES
+  ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1),
+  ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0),
+  ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1),
+  ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0),
+  ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
+
+INSERT INTO Inquiries_Test (name, email, service_ID, meeting_date, confirmed) VALUES ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1), ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0), ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1), ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0), ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
+  
 -- Calendar
 
 CREATE TABLE Calendar (
@@ -138,8 +150,31 @@ CREATE TABLE Calendar (
     FOREIGN KEY (timeslot_5) REFERENCES Inquiries_Test(inquiryID)
 );
 
-
 CREATE TABLE Calendar (calendar_id INT AUTO_INCREMENT PRIMARY KEY, calendar_date DATE, timeslot_1 int(11), timeslot_2 int(11), timeslot_3 int(11), timeslot_4 int(11), timeslot_5 int(11), FOREIGN KEY (timeslot_1) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_2) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_3) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_4) REFERENCES Inquiries_Test(inquiryID), FOREIGN KEY (timeslot_5) REFERENCES Inquiries_Test(inquiryID));
+
+
+-- 21, 22, 23, 24, 25
+
+INSERT INTO Calendar (calendar_date, timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5) VALUES ('2023-10-12', 21, 21, 22, 22, 23);
+
+INSERT INTO Calendar (calendar_date) VALUES ('2023-10-13');
+
+INSERT INTO Calendar (calendar_date) VALUES ('2023-10-14');
+
+INSERT INTO Calendar (calendar_date, timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5) VALUES ('2023-10-15', 24, 24, 25, 25, 25);
+
+INSERT INTO Calendar (calendar_date, timeslot_2, timeslot_3, timeslot_5) VALUES ('2023-10-16', 24, 22, 21);
+
+INSERT INTO Calendar (calendar_date) VALUES ('2023-10-17');
+
+INSERT INTO Calendar (calendar_date) VALUES ('2023-10-18');
+
+INSERT INTO Calendar (calendar_date) VALUES ('2023-10-19');
+
+INSERT INTO Calendar (calendar_date, timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5) VALUES ('2023-10-20', 21, 22, 23, 24, 25);
+
+
+-- Clients
 
 CREATE TABLE Clients (
     clientID INT AUTO_INCREMENT PRIMARY KEY,
