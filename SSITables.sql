@@ -130,7 +130,7 @@ VALUES
   ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-15', 0),
   ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-15', 1);
 
-INSERT INTO Inquiries_Test2_2 (name, email, service_ID, meeting_date, confirmed) VALUES ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1), ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0), ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1), ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0), ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
+INSERT INTO Inquiries_Test2(name, email, service_ID, meeting_date, confirmed) VALUES ('John Doe', 'john.doe@example.com', 1, '2023-10-15', 1), ('Alice Smith', 'alice.smith@example.com', 1, '2023-10-16', 0), ('Bob Johnson', 'bob.johnson@example.com', 16, '2023-10-17', 1), ('Eva Williams', 'eva.williams@example.com', 17, '2023-10-18', 0), ('Charlie Brown', 'charlie.brown@example.com', 18, '2023-10-19', 1);
   
 -- Calendar
 
