@@ -89,6 +89,48 @@ def home():
                 "example_request": "/addInquiry?category=1&name=JC%20Diamante&email=jcsd%40gmail.com&timeslot=1&date=2023-10-16"
             },
             {
+                "url": "/getAllCategories",
+                "params": [],
+                "method": "GET",
+                "description": "Returns all the categories in the database in JSON object format.",
+                "example_request": "/getAllCategories"
+            },
+            {
+                "url": "/getAllInquiries",
+                "params": [],
+                "method": "GET",
+                "description": "Returns all the inquiries in the database in JSON object format.",
+                "example_request": "/getAllInquiries"
+            },
+            {
+                "url": "/getAllOpportunities",
+                "params": [],
+                "method": "GET",
+                "description": "Returns all the Opportunities in the database in JSON object format.",
+                "example_request": "/getAllOpportunities"
+            },
+            {
+                "url": "/getAllPartners",
+                "params": [],
+                "method": "GET",
+                "description": "Returns all the partners in the database in JSON object format.",
+                "example_request": "/getAllPartners"
+            },
+            {
+                "url": "/getAllProjects",
+                "params": [],
+                "method": "GET",
+                "description": "Returns all the projects in the database in JSON object format.",
+                "example_request": "/getAllProjects"
+            },
+            {
+                "url": "/getAllTestimonials",
+                "params": [],
+                "method": "GET",
+                "description": "Returns all the testimonials in the database in JSON object format.",
+                "example_request": "/getAllTestimonials"
+            },
+            {
                 "url": "/getOpportunity",
                 "params": [
                     {
@@ -321,106 +363,6 @@ def websiteData():
 
     return 'Departments'
 
-
-@app.route('/getAllProjects')
-def projects():
-    # connecting to mariadb
-    try:
-
-        return_dict = {}
-        cols = ['id', 'name', 'category', 'description']
-
-        connection = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=database
-        )
-
-        if connection.is_connected():
-            cursor = connection.cursor()
-
-            show_databases_sql = "SELECT * FROM PROJECTS;"
-            cursor.execute(show_databases_sql)
-            project_data = cursor.fetchall()
-
-            project_list = []
-            for row in project_data:
-                project_dict = {
-                    "id": row[0],
-                    "name": row[1],
-                    "category": row[2],
-                    "description": row[3]
-                }
-                project_list.append(project_dict)
-
-            # Convert the list of dictionaries to JSON
-            return jsonify(project_dict)
-
-    except mysql.connector.Error as error:
-        print("Error: {}".format(error))
-
-    finally:
-        if 'connection' in locals() and connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed.")
-
-    return 'Projects'
-
-
-@app.route('/getAllOpportunity')
-def opportunity():
-    # connecting to mariadb
-    try:
-
-        return_dict = {}
-        cols = ['ID', 'title', 'location', 'department',
-                'experience_level', 'description']
-
-        connection = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=database
-        )
-
-        if connection.is_connected():
-            cursor = connection.cursor()
-
-            show_databases_sql = "SELECT * FROM OPPORTUNITIES;"
-            cursor.execute(show_databases_sql)
-            opportunity_data = cursor.fetchall()
-
-            opportunity_list = []
-            for row in opportunity_data:
-                opportunity_dict = {
-                    "ID": row[0],
-                    "title": row[1],
-                    "location": row[2],
-                    "department": row[3],
-                    "experience_level": row[4],
-                    "description": row[5]
-                }
-                opportunity_list.append(opportunity_dict)
-
-            # Convert the list of dictionaries to JSON
-            # project_json = json.dumps(opportunity_list, indent=4)
-
-            return jsonify(opportunity_dict)
-
-    except mysql.connector.Error as error:
-        print("Error: {}".format(error))
-
-    finally:
-        if 'connection' in locals() and connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed.")
-
-    return 'Opportunities'
-
-
 @app.route('/getAllService')
 def services():
 
@@ -533,14 +475,14 @@ def categories():
         if connection.is_connected():
             cursor = connection.cursor()
 
-            show_databases_sql = "SELECT * FROM CATEGORY;"
+            show_databases_sql = "SELECT * FROM categories;"
             cursor.execute(show_databases_sql)
             category_data = cursor.fetchall()
 
             category_list = []
             for row in category_data:
                 category_dict = {
-                    "id": row[0],
+                    "category_Id": row[0],
                     "name": row[1],
                     "description": row[2]
                 }
@@ -549,7 +491,7 @@ def categories():
             # Convert the list of dictionaries to JSON
             category_json = json.dumps(category_list, indent=4)
 
-            return category_json
+            return jsonify(category_list)
 
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
@@ -562,7 +504,7 @@ def categories():
 
     return 'Categories'
 
-@app.route('/GetAllInquiry')
+@app.route('/GetAllInquiries')
 def inquiries():
 
     try:
@@ -580,7 +522,7 @@ def inquiries():
         if connection.is_connected():
             cursor = connection.cursor()
 
-            show_inquiries_sql = "SELECT * FROM SERVICES;"
+            show_inquiries_sql = "SELECT * FROM Inquiries_Test2;"
             cursor.execute(show_inquiries_sql)
             inquiries_data = cursor.fetchall()
 
@@ -590,15 +532,16 @@ def inquiries():
                     "inquiryId" : row[0],
                     "name" : row[1],
                     "email" : row[2],
-                    "serviceInquired" : row[3],
-                    "meetingDate" : row[4]
+                    "service_ID" : row[3],
+                    "meeting_date" : row[4],
+                    "confirmed": row[5]
                 }
                 inquiries_list.append(inquiries_dict)
 
             # Convert the list of dictionaries to JSON
             inquiries_json = json.dumps(inquiries_list, indent = 4)
 
-            return inquiries_json
+            return jsonify(inquiries_list)
             
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
@@ -610,6 +553,56 @@ def inquiries():
             print("MySQL connection is closed.")
 
     return 'Inquiries'
+
+@app.route('/GetAllOpportunities')
+def inquiries():
+
+    try:
+
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            show_inquiries_sql = "SELECT * FROM Opportunities;"
+            cursor.execute(show_inquiries_sql)
+            inquiries_data = cursor.fetchall()
+
+            opportunities_list = []
+            for row in inquiries_data:
+                opportunities_dict = {
+                    "id" : row[0],
+                    "title" : row[1],
+                    "location" : row[2],
+                    "department" : row[3],
+                    "experience_level" : row[4],
+                    "description": row[5],
+                    "qualifications": row[6],
+                    "skills": row[7],
+                    "responsibilities": row[8]
+                }
+                opportunities_list.append(opportunities_dict)
+
+            # Convert the list of dictionaries to JSON
+            opportunities_json = json.dumps(opportunities_list, indent = 4)
+
+            return jsonify(opportunities_list)
+            
+    except mysql.connector.Error as error:
+        print("Error: {}".format(error))
+    
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed.")
+
+    return 'Opportunities'
 
 @app.route('/GetAllPartners')
 def partners():
@@ -629,7 +622,7 @@ def partners():
         if connection.is_connected():
             cursor = connection.cursor()
 
-            show_database_sql = "SELECT * FROM CATEGORY;"
+            show_database_sql = "SELECT * FROM partners;"
             cursor.execute(show_database_sql)
             partners_data = cursor.fetchall()
 
@@ -638,7 +631,7 @@ def partners():
                 partners_dict = {
                     "partnerID" : row[0],
                     "name" : row[1],
-                    "imageData" : row[2]
+                    "photo" : row[2]
                 }
 
             partners_list.append(partners_dict)
@@ -646,7 +639,7 @@ def partners():
             # Convert the list of dictionaries to JSON
             partners_json = json.dumps(partners_list, indent = 4)
 
-            return partners_json
+            return jsonify(partners_json)
         
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
@@ -658,6 +651,104 @@ def partners():
             print("MySQL connection is closed.")
 
     return 'Partners'
+
+
+@app.route('/GetAllProjects')
+def partners():
+    # connecting to mariadb
+    try:
+
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )	
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            show_database_sql = "SELECT * FROM projects;"
+            cursor.execute(show_database_sql)
+            projects_data = cursor.fetchall()
+
+            projects_list = {}
+            for row in projects_data:
+                projects_dict = {
+                    "id" : row[0],
+                    "title" : row[1],
+                    "category" : row[2],
+                    "description" : row[3],
+                    "photo" : row[4],
+                    "name" : row[5],
+                    "logo_url" : row[6],
+                    "year" : row[7]
+                }
+
+            projects_list.append(projects_dict)
+
+            # Convert the list of dictionaries to JSON
+            projects_json = json.dumps(projects_list, indent = 4)
+
+            return jsonify(projects_json)
+        
+    except mysql.connector.Error as error:
+        print("Error: {}".format(error))
+    
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed.")
+
+    return 'Projects'
+
+@app.route('/GetAllTestimonials')
+def partners():
+    # connecting to mariadb
+    try:
+
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )	
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            show_database_sql = "SELECT * FROM testimonials;"
+            cursor.execute(show_database_sql)
+            testimonials_data = cursor.fetchall()
+
+            testimonials_list = {}
+            for row in testimonials_data:
+                testimonials_dict = {
+                    "id" : row[0],
+                    "name" : row[1],
+                    "title" : row[2],
+                    "testimony" : row[3],
+                    "photo" : row[4],
+                }
+
+            testimonials_list.append(testimonials_dict)
+
+            # Convert the list of dictionaries to JSON
+            testimonials_json = json.dumps(testimonials_list, indent = 4)
+
+            return jsonify(testimonials_json)
+        
+    except mysql.connector.Error as error:
+        print("Error: {}".format(error))
+    
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed.")
+
+    return 'Testimonials'
 
 # Example:
 # /getTimeSlots?day=16&month=10&year=2023
