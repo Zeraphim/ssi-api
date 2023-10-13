@@ -578,7 +578,7 @@ def inquiries():
             # Convert the list of dictionaries to JSON
             inquiries_json = json.dumps(inquiries_list, indent = 4)
 
-            return jsonify(inquiries_list)
+            return jsonify(inquiries_json)
             
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
