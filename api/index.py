@@ -555,7 +555,7 @@ def inquiries():
     return 'Inquiries'
 
 @app.route('/GetAllOpportunities')
-def inquiries():
+def opportunities():
 
     try:
 
@@ -654,7 +654,7 @@ def partners():
 
 
 @app.route('/GetAllProjects')
-def partners():
+def projects():
     # connecting to mariadb
     try:
 
@@ -704,7 +704,7 @@ def partners():
     return 'Projects'
 
 @app.route('/GetAllTestimonials')
-def partners():
+def testimonials():
     # connecting to mariadb
     try:
 
@@ -912,4 +912,4 @@ def add_inquiry():
         return f"An error occurred: {e}\n{traceback.format_exc()}"
 
 # comment this out when running in vercel
-# app.run() # - uncomment to run in local
+app.run() # - uncomment to run in local
