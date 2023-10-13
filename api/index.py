@@ -857,10 +857,10 @@ def taken_dates():
                     f"WHERE YEAR(calendar_date) = {year} " \
                     f"AND MONTH(calendar_date) = {month} " \
                     f"AND (timeslot_1 IS NOT NULL " \
-                    f"OR timeslot_2 IS NOT NULL " \
-                    f"OR timeslot_3 IS NOT NULL " \
-                    f"OR timeslot_4 IS NOT NULL " \
-                    f"OR timeslot_5 IS NOT NULL)"
+                    f"AND timeslot_2 IS NOT NULL " \
+                    f"AND timeslot_3 IS NOT NULL " \
+                    f"AND timeslot_4 IS NOT NULL " \
+                    f"AND timeslot_5 IS NOT NULL)"
 
         cursor.execute(sql_query)
 
