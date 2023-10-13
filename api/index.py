@@ -949,4 +949,4 @@ def add_inquiry():
         return f"An error occurred: {e}\n{traceback.format_exc()}"
 
 # comment this out when running in vercel
-app.run() # - uncomment to run in local
+# app.run() # - uncomment to run in local
