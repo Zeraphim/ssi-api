@@ -541,7 +541,7 @@ def categories():
 
     return 'Categories'
 
-@app.route('/GetAllInquiries')
+@app.route('/getAllInquiries')
 def inquiries():
 
     try:
@@ -566,11 +566,11 @@ def inquiries():
             inquiries_list = []
             for row in inquiries_data:
                 inquiries_dict = {
-                    "inquiryId" : row[0],
+                    "inquiryID" : row[0],
                     "name" : row[1],
                     "email" : row[2],
                     "service_ID" : row[3],
-                    "meeting_date" : row[4],
+                    "meeting_date" : row[4].strftime('%YYYY-%mm-%dd'),
                     "confirmed": row[5]
                 }
                 inquiries_list.append(inquiries_dict)
@@ -578,7 +578,7 @@ def inquiries():
             # Convert the list of dictionaries to JSON
             inquiries_json = json.dumps(inquiries_list, indent = 4)
 
-            return jsonify(inquiries_json)
+            return jsonify(inquiries_list)
             
     except mysql.connector.Error as error:
         print("Error: {}".format(error))
@@ -591,7 +591,7 @@ def inquiries():
 
     return 'Inquiries'
 
-@app.route('/GetAllOpportunities')
+@app.route('/getAllOpportunities')
 def opportunities():
 
     try:
@@ -641,7 +641,7 @@ def opportunities():
 
     return 'Opportunities'
 
-@app.route('/GetAllPartners')
+@app.route('/getAllPartners')
 def partners():
     # connecting to mariadb
     try:
@@ -690,7 +690,7 @@ def partners():
     return 'Partners'
 
 
-@app.route('/GetAllProjects')
+@app.route('/getAllProjects')
 def projects():
     # connecting to mariadb
     try:
@@ -740,7 +740,7 @@ def projects():
 
     return 'Projects'
 
-@app.route('/GetAllTestimonials')
+@app.route('/getAllTestimonials')
 def testimonials():
     # connecting to mariadb
     try:
@@ -949,4 +949,4 @@ def add_inquiry():
         return f"An error occurred: {e}\n{traceback.format_exc()}"
 
 # comment this out when running in vercel
-# app.run() # - uncomment to run in local
+app.run() # - uncomment to run in local
