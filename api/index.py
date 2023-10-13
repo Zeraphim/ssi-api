@@ -38,7 +38,6 @@ app.wsgi_app = ProxyFix(
 CORS(app)
 
 
-
 '''
 
 To Add:
@@ -737,5 +736,35 @@ def taken_dates():
     except Exception as e:
         return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
 
+@app.route('/addInquiry', methods=['GET'])
+def add_inquiry():
+
+	try:
+		day = request.args.get('day', type=int)
+		month = request.args.get('month', type=int)
+		year = request.args.get('year', type=int)
+
+		timeslots = ['10:00', '11:00', '12:00', '13:00', '14:00']
+
+		# Connect to the database
+		conn = mysql.connector.connect(
+			host=host,
+			user=user,
+			password=password,
+			database=database
+		)
+
+		cursor = conn.cursor()
+
+
+
+		cursor.close()
+		conn.close()
+
+		return 
+
+	except Exception as e:
+		return jsonify({'error': 'An error occurred while fetching the schedule data'}), 500
+
 # comment this out when running in vercel
-app.run() # - uncomment to run in local
+# app.run() # - uncomment to run in local
