@@ -1,7 +1,9 @@
 # How to use
 # http://127.0.0.1:5000/api/hello
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
+from functools import wraps
+
 import mysql.connector
 import json
 import base64
@@ -53,8 +55,42 @@ schedule.svelte
 
 '''
 
+# Authentication
+
+USERNAME = 'zeraphim'
+PASSWORD = 'admin123'
+
+# Check if the provided username and password are correct
+def check_auth(username, password):
+    return username == USERNAME and password == PASSWORD
+
+# Prompt the user to enter username and password
+def authenticate():
+    return Response(
+        'Could not verify your access level for that URL.\n'
+        'You have to login with proper credentials', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+# Decorator for checking authentication
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
+# Sample endpoint that requires authentication
+@app.route('/api/protected')
+@requires_auth
+def protected():
+    return 'Authentication Successful'
+
+
 
 @app.route('/')
+@requires_auth
 def home():
 
     data = {
@@ -243,6 +279,7 @@ def home():
 
 
 @app.route('/getWebsiteData')
+@requires_auth
 def websiteData():
 
     # connecting to mariadb
