@@ -13,6 +13,20 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import traceback
 
 from datetime import date
+from datetime import datetime
+
+from dotenv import load_dotenv
+import os
+
+from flask_basicauth import BasicAuth
+
+
+from flask import Flask
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
+
 
 '''
 
@@ -26,7 +40,7 @@ Missing:
 
 '''
 
-host = "3.27.249.230"
+host = "localhost"
 user = "remoteAdmin"
 password = "adminTest1"
 database = "ssi"
@@ -36,12 +50,26 @@ database = "ssi"
 
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
 
 CORS(app)
+
+load_dotenv()  # Load the environment variables from the .env file
+
+users = {
+    "zeraphim": generate_password_hash("admin123")
+}
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
+
 
 
 '''
@@ -57,40 +85,16 @@ schedule.svelte
 
 # Authentication
 
-USERNAME = 'zeraphim'
-PASSWORD = 'admin123'
 
-# Check if the provided username and password are correct
-def check_auth(username, password):
-    return username == USERNAME and password == PASSWORD
 
-# Prompt the user to enter username and password
-def authenticate():
-    return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
+# app.config['BASIC_AUTH_USERNAME'] = os.getenv("USERNAME")  # Set your desired username here
+# app.config['BASIC_AUTH_PASSWORD'] = os.getenv("PASSWORD")  # Set your desired password here
 
-# Decorator for checking authentication
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
-        return f(*args, **kwargs)
-    return decorated
-
-# Sample endpoint that requires authentication
-@app.route('/api/protected')
-@requires_auth
-def protected():
-    return 'Authentication Successful'
-
+# basic_auth = BasicAuth(app)
 
 
 @app.route('/')
-@requires_auth
+@auth.login_required
 def home():
 
     data = {
@@ -279,7 +283,7 @@ def home():
 
 
 @app.route('/getWebsiteData')
-@requires_auth
+@auth.login_required
 def websiteData():
 
     # connecting to mariadb
@@ -401,6 +405,7 @@ def websiteData():
     return 'Departments'
 
 @app.route('/getAllService')
+@auth.login_required
 def services():
 
     # connecting to mariadb
@@ -450,6 +455,7 @@ def services():
 
 
 @app.route('/getAllDepartments')
+@auth.login_required
 def departments():
 
     # connecting to mariadb
@@ -498,6 +504,7 @@ def departments():
 
 
 @app.route('/getAllCategories')
+@auth.login_required
 def categories():
     # connecting to mariadb
     try:
@@ -542,6 +549,7 @@ def categories():
     return 'Categories'
 
 @app.route('/getAllInquiries')
+@auth.login_required
 def inquiries():
 
     try:
@@ -592,6 +600,7 @@ def inquiries():
     return 'Inquiries'
 
 @app.route('/getAllOpportunities')
+@auth.login_required
 def opportunities():
 
     try:
@@ -642,6 +651,7 @@ def opportunities():
     return 'Opportunities'
 
 @app.route('/getAllPartners')
+@auth.login_required
 def partners():
     # connecting to mariadb
     try:
@@ -691,6 +701,7 @@ def partners():
 
 
 @app.route('/getAllProjects')
+@auth.login_required
 def projects():
     # connecting to mariadb
     try:
@@ -741,6 +752,7 @@ def projects():
     return 'Projects'
 
 @app.route('/getAllTestimonials')
+@auth.login_required
 def testimonials():
     # connecting to mariadb
     try:
@@ -791,6 +803,7 @@ def testimonials():
 # /getTimeSlots?day=16&month=10&year=2023
 
 @app.route('/getTimeSlots', methods=['GET'])
+@auth.login_required
 def get_available_time_slots():
     try:
         day = request.args.get('day', type=int)
@@ -836,6 +849,7 @@ def get_available_time_slots():
 # Example:
 # /getTakenDates?month=10&year=2023
 @app.route('/getTakenDates', methods=['GET'])
+@auth.login_required
 def taken_dates():
     try:
         # Parse query parameters if needed (e.g., month and year)
@@ -878,23 +892,17 @@ def taken_dates():
 
 # Example:
 # /addInquiry?category=1&name=JC%20Diamante&email=jcsd%40gmail.com&timeslot=1&date=2023-10-16
-@app.route('/addInquiry', methods=['GET'])
+@app.route('/addInquiry', methods=['POST'])
+@auth.login_required
 def add_inquiry():
-
     try:
         CategoryID = request.args.get('category', type=int)
         name = request.args.get('name', type=str)
         email = request.args.get('email', type=str)
-        timeslot = request.args.get('timeslot', type=int) # '10:00', '11:00', '12:00', '13:00', '14:00'
-        date_arg = request.args.get('date', type=str)
+        timeslot = request.args.get('timeslot', type=int)  # '10:00', '11:00', '12:00', '13:00', '14:00'
+        date_arg_str = request.args.get('date', type=str)  # Get the date as a string
+        date_arg = datetime.strptime(date_arg_str, '%Y-%m-%d %H:%M:%S')  # Convert the string to a datetime object
 
-        # CategoryID = 1
-        # name = 'JC Diamante'
-        # email = 'jdmntec'
-        # timeslot = 1
-        # date = '2023-10-16'
-
-        # timeslot_1, timeslot_2, timeslot_3, timeslot_4, timeslot_5
         timeslot_list = ['timeslot_1', 'timeslot_2', 'timeslot_3', 'timeslot_4', 'timeslot_5']
 
         # Connect to the database
@@ -907,9 +915,7 @@ def add_inquiry():
 
         cursor = conn.cursor()
 
-        # make an SQL query that will insert the inquiry to the mysql database
-
-        # Create Inquiry
+        # Make an SQL query that will insert the inquiry into the MySQL database
         sql_query = "INSERT INTO Inquiries_Test2 (name, email, service_ID, meeting_date) VALUES (%s, %s, %s, %s);"
         values = (name, email, CategoryID, date_arg)
 
@@ -918,35 +924,25 @@ def add_inquiry():
         conn.commit()
 
         sql_query = "SELECT MAX(inquiryID) FROM Inquiries_Test2;"
-
         cursor.execute(sql_query)
-
         rows = cursor.fetchall()
 
         # Get the last inserted inquiry_id
         max_inquiry_id = int(rows[0][0])
 
-        # Convert date argument (string) to DATE object
-        # date_object = datetime.datetime.strptime(date, '%Y-%m-%d').date()
-
-        sql_query = f"UPDATE Calendar_Test2 SET {timeslot_list[timeslot]} = {max_inquiry_id} WHERE calendar_date = '{date_arg}';"
-
-        # UPDATE Calendar_Test2 SET timeslot_2 = NULL WHERE calendar_date = '2023-10-16';
-
-        date_string = date(int(date_arg.split('-')[0]), int(date_arg.split('-')[1]), int(date_arg.split('-')[2])).strftime('%Y-%m-%d')
-
+        # Update the Calendar_Test2 table
+        sql_query = f"UPDATE Calendar_Test2 SET {timeslot_list[timeslot - 1]} = {max_inquiry_id} WHERE calendar_date = '{date_arg_str}';"
 
         cursor.execute(sql_query)
-
         conn.commit()
 
         cursor.close()
         conn.close()
 
         return f'Value Inserted at Inquiry: {max_inquiry_id}'
-    
+
     except Exception as e:
         return f"An error occurred: {e}\n{traceback.format_exc()}"
 
 # comment this out when running in vercel
-# app.run() # - uncomment to run in local
+app.run() # - uncomment to run in local
